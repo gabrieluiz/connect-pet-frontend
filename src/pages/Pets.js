@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Pets.css';
+import { API_URL } from '../config'; // Importa a URL da API
 
 function Pets() {
     const [pets, setPets] = useState([]);
@@ -18,7 +19,7 @@ function Pets() {
                 return;
             }
 
-            const response = await axios.get('http://localhost:3000/api/pets', {
+            const response = await axios.get(`${API_URL}/api/pets`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPets(response.data);
@@ -34,14 +35,14 @@ function Pets() {
 
         try {
             if (isEditing) {
-                await axios.put(`http://localhost:3000/api/pets/${form.id}`, form, {
+                await axios.put(`${API_URL}/api/pets/${form.id}`, form, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setPets((prevPets) =>
                     prevPets.map((pet) => (pet.id === form.id ? { ...pet, ...form } : pet))
                 );
             } else {
-                const response = await axios.post('http://localhost:3000/api/pets', form, {
+                const response = await axios.post(`${API_URL}/api/pets`, form, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setPets((prevPets) => [...prevPets, response.data]);
@@ -64,7 +65,7 @@ function Pets() {
     const handleDelete = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:3000/api/pets/${id}`, {
+            await axios.delete(`${API_URL}/api/pets/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));

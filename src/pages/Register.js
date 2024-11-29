@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config'; // Importa a URL da API
 
 function Register() {
     const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -9,7 +10,8 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3000/api/users/register', form);
+            // Usando API_URL para a URL do backend
+            await axios.post(`${API_URL}/api/users/register`, form);
             alert('Usuário cadastrado com sucesso!');
             navigate('/login'); // Redireciona para a tela de login
         } catch (error) {
